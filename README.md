@@ -1,6 +1,7 @@
 # Wiki Page
 
-This project is an assignment for CS50w. I don't own the rights for the complete code since a distribution base code has been provided by CS50 staff.
+This project is an assignment for CS50w. I don't own the rights for the complete code since a distribution base code was provided by CS50 staff.
+For more details about this project visit: [Harvard CS50w: Project 1 Wiki](https://cs50.harvard.edu/web/2020/projects/1/wiki/).
 
 ## Specifications
 
