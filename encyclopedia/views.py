@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import re
+import markdown
 
 from . import util
 
@@ -12,12 +12,7 @@ def index(request):
     #Experimenting with the code
 def read_page(request, name):
     entry = util.get_entry(name)
-    entryHtml = mdConverter(entry)
     return render(request, "encyclopedia/entry-page.html", {
-        "name": name,
-        "entry": entryHtml
+        "name": name.capitalize(),
+        "entry": markdown.markdown(entry)
         })
-
-def mdConverter(md):
-    print (re.sub('^#{1} (.+)$', '<h1>\\1</h1>', md))
-    return re.sub('^#{1} (.+)$', '<h1>\\1</h1>', md)
