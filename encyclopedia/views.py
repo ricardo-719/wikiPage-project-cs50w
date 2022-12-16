@@ -9,10 +9,13 @@ def index(request):
         "entries": util.list_entries()
     })
 
-    #Experimenting with the code
+    #Fetch the requested page, redirects users to error page if not found
 def read_page(request, name):
     entry = util.get_entry(name)
-    return render(request, "encyclopedia/entry-page.html", {
-        "name": name.capitalize(),
-        "entry": markdown.markdown(entry)
-        })
+    if entry == None:
+        return render(request, "encyclopedia/404PageNotFound.html")
+    else:
+        return render(request, "encyclopedia/entry-page.html", {
+            "name": name.capitalize(),
+            "entry": markdown.markdown(entry)
+            })
