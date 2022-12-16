@@ -9,7 +9,7 @@ def index(request):
         "entries": util.list_entries()
     })
 
-    #Fetch the requested page, redirects users to error page if not found
+# Fetch the requested page, redirects users to error page if not found
 def read_page(request, name):
     entry = util.get_entry(name)
     if entry == None:
@@ -19,3 +19,7 @@ def read_page(request, name):
             "name": name.capitalize(),
             "entry": markdown.markdown(entry)
             })
+
+# Allow user to input a new entry
+def create_entry(request):
+    return render(request, "encyclopedia/create-entry.html")
