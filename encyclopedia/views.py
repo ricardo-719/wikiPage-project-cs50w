@@ -21,5 +21,8 @@ def read_page(request, name):
             })
 
 # Allow user to input a new entry
+# Create form using the Django method / 1hr 19mins into the lecture...
 def create_entry(request):
+    if request.method == "POST":
+        data = request.POST
     return render(request, "encyclopedia/create-entry.html")

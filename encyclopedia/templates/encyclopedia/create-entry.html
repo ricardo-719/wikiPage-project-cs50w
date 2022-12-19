@@ -6,7 +6,8 @@
 
 {% block body %}
     <h1 class="ml-2">Submit New Entry</h1>
-    <form>
+    <form action="{ url 'create' %}" method="post">
+        {% csrf_token %}
         <input class="form-control w-75 mb-1 ml-2" autocomplete="off" autofocus type="text" name="entryTitle" placeholder="Entry Title">
         <textarea class="form-control w-75 mb-1 ml-2" type="text" name="entryBody" rows="15" wrap="soft" 
         maxlength="5000" class="form-control" autocomplete="off" 
