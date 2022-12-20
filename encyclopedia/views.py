@@ -1,8 +1,16 @@
+from django import forms
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 import markdown
 
 from . import util
 
+class newPageEntry(forms.Form):
+    pageTitle = forms.CharField(label = "Title")
+    pageContent = forms.CharField(label= "Content")
+    pageTitle.widget.attrs.update({'placeholder': 'Title'})
+    pageContent.widget.attrs.update({'placeholder': 'Content'})
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -24,5 +32,17 @@ def read_page(request, name):
 # Create form using the Django method / 1hr 19mins into the lecture...
 def create_entry(request):
     if request.method == "POST":
-        data = request.POST
-    return render(request, "encyclopedia/create-entry.html")
+        form = newPageEntry(request.POST)
+        #Figure out how to add both Title and Content!!
+        if form.is_valid():
+            title = form.cleaned_data["Title"]
+            content = form.cleaned_data["Content"]
+            entries.append(content)
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "encyclopedia/create-entry.html", {
+                "form": form
+            } )
+    return render(request, "encyclopedia/create-entry.html", {
+        "form": newPageEntry()
+    })

@@ -8,10 +8,13 @@
     <h1 class="ml-2">Submit New Entry</h1>
     <form action="{ url 'create' %}" method="post">
         {% csrf_token %}
-        <input class="form-control w-75 mb-1 ml-2" autocomplete="off" autofocus type="text" name="entryTitle" placeholder="Entry Title">
+        <div class="formContainer">
+            {{ form|safe }}
+        </div>
+        <!-- <input class="form-control w-75 mb-1 ml-2" autocomplete="off" autofocus type="text" name="entryTitle" placeholder="Entry Title">
         <textarea class="form-control w-75 mb-1 ml-2" type="text" name="entryBody" rows="15" wrap="soft" 
         maxlength="5000" class="form-control" autocomplete="off" 
-        placeholder="Entry Body"></textarea>
+        placeholder="Entry Body"></textarea> -->
         <input class="btn btn-info ml-2" type="submit">
     </form>
 {% endblock %}

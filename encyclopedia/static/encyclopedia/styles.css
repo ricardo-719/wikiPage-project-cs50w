@@ -32,3 +32,8 @@ textarea {
     height: 100vh;
     padding: 20px;
 }
+
+#id_pageContent {
+    width: 300px;
+    height: 300px;
+}
