@@ -6,7 +6,7 @@
 
 {% block body %}
     <h1 class="ml-2">Submit New Entry</h1>
-    <form action="{ url 'create' %}" method="post">
+    <form action="{% url 'create' %}" method="post">
         {% csrf_token %}
         <div class="formContainer">
             {{ form|safe }}
