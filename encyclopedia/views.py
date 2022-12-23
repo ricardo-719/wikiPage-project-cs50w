@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
 import markdown
+import random
 
 from . import util
 
@@ -14,8 +15,14 @@ class newPageEntry(forms.Form):
     pageContent.widget.attrs.update({'placeholder': 'Content'})
 
 def index(request):
+    # Importing random for the random functionality
+    randomEntryList = random.sample(util.list_entries(), 1)
+    randomEntry=""
+    for e in randomEntryList:
+        randomEntry += e
     return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
+        "entries": util.list_entries(),
+        "randomEntry": randomEntry
     })
 
 # Fetch the requested page, redirects users to error page if not found
