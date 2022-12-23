@@ -9,6 +9,14 @@
     <form action="{% url 'create' %}" method="post">
         {% csrf_token %}
         <div class="formContainer">
+            {% if messages %}
+            <ul class="messages" style="border: 2px solid rgba(255, 0, 0, 0.493); background-color: rgba(255, 0, 0, 0.315); list-style: none;
+            text-align: center; width: 50%;">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
             {{ form|safe }}
         </div>
         <!-- <input class="form-control w-75 mb-1 ml-2" autocomplete="off" autofocus type="text" name="entryTitle" placeholder="Entry Title">

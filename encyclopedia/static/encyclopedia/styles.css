@@ -33,7 +33,15 @@ textarea {
     padding: 20px;
 }
 
-#id_pageContent {
-    width: 300px;
-    height: 300px;
+.formContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.messages {
+    border: 2px solid red;
+    background-color: rgba(255, 0, 0, 0.466);
+    list-style: none;
+    text-align: center;
+    width: 50%;
 }

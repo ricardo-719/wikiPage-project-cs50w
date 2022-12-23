@@ -2,13 +2,14 @@ from django import forms
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib import messages
 import markdown
 
 from . import util
 
 class newPageEntry(forms.Form):
     pageTitle = forms.CharField(label = "Title")
-    pageContent = forms.CharField(label= "Content")
+    pageContent = forms.CharField(widget=forms.Textarea(attrs={"rows":"4"}), label="Content")
     pageTitle.widget.attrs.update({'placeholder': 'Title'})
     pageContent.widget.attrs.update({'placeholder': 'Content'})
 
@@ -29,16 +30,21 @@ def read_page(request, name):
         })
 
 # Allow user to input a new entry
-# Create form using the Django method / 1hr 19mins into the lecture...
 def create_entry(request):
     if request.method == "POST":
         form = newPageEntry(request.POST)
-        #Figure out how to add both Title and Content!! CONTINUE VID ON SESSIONS TIMEMARK
         if form.is_valid():
-            title = form.cleaned_data["Title"]
-            content = form.cleaned_data["Content"]
-            # Use the util function to save
-            return HttpResponseRedirect(reverse("index"))
+            title = form.cleaned_data["pageTitle"]
+            content = form.cleaned_data["pageContent"]
+            fetchEntry = util.get_entry(title)
+            if fetchEntry == None:
+                util.save_entry(title, content)
+                return HttpResponseRedirect(reverse("index"))
+            else:
+                messages.add_message(request, messages.INFO, 'Oops! This entry already exist.')    
+                return render(request, "encyclopedia/create-entry.html", {
+                    "form":form
+                })
         else:
             return render(request, "encyclopedia/create-entry.html", {
                 "form": form
@@ -51,18 +57,23 @@ def search_page(request):
     if request.method == "POST":
         searchQuery = request.POST.get('q')
         fetchEntry = util.get_entry(searchQuery)
-        ######## CONTINUE HERE
         if fetchEntry == None:
             entries = util.list_entries()
-            queryMatches = str for str in entries if any(sub in str for sub in searchQuery) #entries and then have some sort of a function that sort it out
-            #Here the page must display all the search elements that partially match the query
-            return render(request, "encyclopedia/search-page.html", {
-                "entries": queryMatches
-                })
+            #queryMatches = []
+            #for i in searchQuery:
+                #for j in entries:
+                    #if(j.find(i) != -1 and j not in queryMatches):
+                        #queryMatches.append(j)
+            queryMatches = [str for str in entries if any(sub in str for sub in searchQuery)]
+            if len(queryMatches) >= 1:
+                return render(request, "encyclopedia/search-page.html", {
+                    "entries": queryMatches
+                    })
+            else:
+                return render(request, "encyclopedia/404PageNotFound.html")
         else:
             return HttpResponseRedirect(f"/{searchQuery}")
             
             #render(request, "encyclopedia/entry-page.html", {
              #   "entry": markdown.markdown(fetchEntry)
             #})
-        ######## CONTINUE HERE
