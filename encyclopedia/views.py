@@ -60,6 +60,26 @@ def create_entry(request):
         "form": newPageEntry()
     })
 
+def edit_entry(request):
+    if request.method == "POST":
+        edit = {"Edit": ["Edit"]}
+        print(request.POST["editBtn"])
+        if request.POST["editBtn"] == edit["Edit"][0]:
+            title = request.POST["Edit"]
+            content = util.get_entry(title)
+            return render(request, "encyclopedia/edit-entry.html", {
+                    "title": title,
+                    "content": content
+                })
+        else:
+            form = request.POST
+            title = form['entryTitle']
+            content = form['entryContent']
+            util.save_entry(title, content)
+            return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "encyclopedia/404PageNotFound.html") 
+
 def search_page(request):
     if request.method == "POST":
         searchQuery = request.POST.get('q')

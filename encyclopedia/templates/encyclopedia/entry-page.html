@@ -8,10 +8,10 @@
 
 {{ entry|safe }}
 <br>
-<form action="{% url 'create' %}" method="post">
+<form action="{% url 'edit' %}" method="post">
     {% csrf_token %}
-    <input type="hidden" name="Edit" value="{{ entry }}">
-    <input class="btn btn-info ml-2" type="submit" value="Edit" name="Edit">
+    <input type="hidden" name="Edit" value="{{ name }}">
+    <input class="btn btn-info ml-2" type="submit" value="Edit" name="editBtn">
 </form>
 <!-- Add edit button that is basically a post request to read_page. Then use newPageClass to reloead the page on Create New Page -->
 {% endblock %}
