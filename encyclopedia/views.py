@@ -62,8 +62,8 @@ def create_entry(request):
 
 def edit_entry(request):
     if request.method == "POST":
+        # Edit has two "POST" access points, the first conditional if helps distinguish the source
         edit = {"Edit": ["Edit"]}
-        print(request.POST["editBtn"])
         if request.POST["editBtn"] == edit["Edit"][0]:
             title = request.POST["Edit"]
             content = util.get_entry(title)
