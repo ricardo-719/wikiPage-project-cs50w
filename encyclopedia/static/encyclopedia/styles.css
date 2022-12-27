@@ -17,6 +17,15 @@ textarea {
     width: 80%;
 }
 
+#id_pageTitle {
+    width: 80%;
+}
+
+#id_pageContent {
+    height: 90vh;
+    width: 80%;
+}
+
 .main {
     padding: 10px;
 }

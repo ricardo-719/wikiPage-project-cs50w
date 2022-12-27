@@ -76,7 +76,7 @@ def edit_entry(request):
             title = form['entryTitle']
             content = form['entryContent']
             util.save_entry(title, content)
-            return HttpResponseRedirect(reverse("index"))
+            return read_page(request, title)
     else:
         return render(request, "encyclopedia/404PageNotFound.html") 
 
