@@ -8,6 +8,7 @@ import random
 
 from . import util
 
+# Prepare form for create page
 class newPageEntry(forms.Form):
     pageTitle = forms.CharField(label = "Title")
     pageContent = forms.CharField(widget=forms.Textarea(attrs={"rows":"4"}), label="Content")
@@ -44,6 +45,7 @@ def create_entry(request):
             title = form.cleaned_data["pageTitle"]
             content = form.cleaned_data["pageContent"]
             fetchEntry = util.get_entry(title)
+            # Verify if entry already exist, flash error message if that's the case
             if fetchEntry == None:
                 util.save_entry(title, content)
                 return HttpResponseRedirect(reverse("index"))
@@ -62,7 +64,7 @@ def create_entry(request):
 
 def edit_entry(request):
     if request.method == "POST":
-        # Edit has two "POST" access points, the first conditional if helps distinguish the source
+        # Edit has two "POST" access points, the first conditional 'if' helps distinguish the source
         edit = {"Edit": ["Edit"]}
         if request.POST["editBtn"] == edit["Edit"][0]:
             title = request.POST["Edit"]
@@ -84,15 +86,16 @@ def search_page(request):
     if request.method == "POST":
         searchQuery = request.POST.get('q')
         fetchEntry = util.get_entry(searchQuery)
+        # If query doesn't has an exact match provide substring matches
         if fetchEntry == None:
             entries = util.list_entries()
-            #queryMatches = []
-            #for i in searchQuery:
-                #for j in entries:
-                    #if(j.find(i) != -1 and j not in queryMatches):
-                        #queryMatches.append(j)
-            queryMatches = [str for str in entries if any(sub in str for sub in searchQuery)]
+            queryMatches = []
+            for i in searchQuery:
+                for j in entries:
+                    if searchQuery in j:
+                        queryMatches.append(j)
             if len(queryMatches) >= 1:
+                queryMatches = set(queryMatches)
                 return render(request, "encyclopedia/search-page.html", {
                     "entries": queryMatches
                     })
@@ -100,7 +103,5 @@ def search_page(request):
                 return render(request, "encyclopedia/404PageNotFound.html")
         else:
             return HttpResponseRedirect(f"/{searchQuery}")
-            
-            #render(request, "encyclopedia/entry-page.html", {
-             #   "entry": markdown.markdown(fetchEntry)
-            #})
+    else:
+        return render(request, "encyclopedia/404PageNotFound.html")
